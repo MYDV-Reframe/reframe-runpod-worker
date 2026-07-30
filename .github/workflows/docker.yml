@@ -28,4 +28,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/MYDV-Reframe/reframe-runpod-worker:latest
+          tags: ghcr.io/mydv-reframe/reframe-runpod-worker:latest
