@@ -1,6 +1,4 @@
 runpod
-torch
-torchvision
 diffusers
 transformers
 accelerate
