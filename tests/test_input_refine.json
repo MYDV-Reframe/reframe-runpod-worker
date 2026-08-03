@@ -1,0 +1,16 @@
+{
+  "input": {
+    "schema_version": 1,
+    "task": "refine-full-resolution-alpha",
+    "job_id": "job_test_refine_0001",
+    "trace_id": "trace_test_0002",
+    "image_id": "img_test_0001",
+    "session_id": "ses_test_0001",
+    "owner_id": "usr_test_0001",
+    "segmentation_model": "birefnet-general-lite",
+    "r2": {
+      "original_key": "raw/usr_test_0001/ses_test_0001/img_test_0001/original.jpg",
+      "analysis_key": "analysis/usr_test_0001/ses_test_0001/img_test_0001/vehicle-v1.json"
+    }
+  }
+}
