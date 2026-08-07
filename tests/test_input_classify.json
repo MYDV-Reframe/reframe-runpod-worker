@@ -1,0 +1,16 @@
+{
+  "input": {
+    "schema_version": 1,
+    "task": "classify-image",
+    "job_id": "job_test_classify_0001",
+    "trace_id": "trace_test_0001",
+    "image_id": "img_test_0001",
+    "session_id": "ses_test_0001",
+    "owner_id": "usr_test_0001",
+    "processing_mode": "auto",
+    "segmentation_model": "birefnet-general-lite",
+    "r2": {
+      "processing_copy_key": "processing/usr_test_0001/ses_test_0001/img_test_0001/processing-copy.webp"
+    }
+  }
+}

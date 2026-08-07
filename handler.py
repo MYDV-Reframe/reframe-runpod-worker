@@ -1,77 +1,71 @@
-import base64
-import io
-import os
-import time
+"""RunPod serverless entrypoint. Dispatches jobs by task type.
 
-import requests
+Phase 1 scope: classify-image and refine-full-resolution-alpha only. This
+replaces the previous disconnected Stable Diffusion XL img2img prototype
+entirely - that code had no caller anywhere in the product and is not part
+of this migration.
+"""
+
+from __future__ import annotations
+
+import logging
+from typing import Callable
+
 import runpod
-import torch
-from PIL import Image
-from diffusers import AutoPipelineForImage2Image
 
-MODEL_ID = os.getenv("MODEL_ID", "stabilityai/stable-diffusion-xl-base-1.0")
-HF_TOKEN = os.getenv("HF_TOKEN")
+from app.tasks.classify_image import run_classify_image
+from app.tasks.refine_full_alpha import run_refine_full_alpha
 
-device = "cuda" if torch.cuda.is_available() else "cpu"
-dtype = torch.float16 if device == "cuda" else torch.float32
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-pipe = AutoPipelineForImage2Image.from_pretrained(
-    MODEL_ID,
-    torch_dtype=dtype,
-    use_safetensors=True,
-    token=HF_TOKEN,
-)
-pipe = pipe.to(device)
+TASKS: dict[str, Callable[[dict[str, object]], dict[str, object]]] = {
+    "classify-image": run_classify_image,
+    "refine-full-resolution-alpha": run_refine_full_alpha,
+}
 
 
-def load_image(image_url):
-    response = requests.get(image_url, timeout=60)
-    response.raise_for_status()
-    return Image.open(io.BytesIO(response.content)).convert("RGB")
+def handler(job: dict[str, object]) -> dict[str, object]:
+    payload = job.get("input", {}) or {}
+    task = payload.get("task")
+    run_task = TASKS.get(str(task)) if task else None
 
+    if run_task is None:
+        return {
+            "status": "failed",
+            "job_id": payload.get("job_id", "unknown"),
+            "task": task or "unknown",
+            "trace_id": payload.get("trace_id", "unknown"),
+            "image_type": None,
+            "artifacts": None,
+            "runtime_ms": None,
+            "error": {
+                "code": "unsupported_task",
+                "stage": "dispatch",
+                "message": f"No handler registered for task: {task!r}",
+                "retryable": False,
+            },
+        }
 
-def image_to_base64(image):
-    buffer = io.BytesIO()
-    image.save(buffer, format="JPEG", quality=92)
-    return base64.b64encode(buffer.getvalue()).decode("utf-8")
-
-
-def handler(job):
-    started = time.time()
-    data = job.get("input", {})
-
-    image_url = data["image_url"]
-    prompt = data.get(
-        "prompt",
-        "commercial dealership vehicle photo, realistic lighting, natural shadows",
-    )
-    negative_prompt = data.get(
-        "negative_prompt",
-        "distorted car, changed vehicle shape, bad wheels, blurry, fake, cartoon",
-    )
-
-    strength = float(data.get("strength", 0.22))
-    steps = int(data.get("steps", 25))
-    guidance = float(data.get("guidance_scale", 5.0))
-
-    image = load_image(image_url)
-    image = image.resize((1024, 768))
-
-    result = pipe(
-        prompt=prompt,
-        negative_prompt=negative_prompt,
-        image=image,
-        strength=strength,
-        guidance_scale=guidance,
-        num_inference_steps=steps,
-    ).images[0]
-
-    return {
-        "status": "completed",
-        "model": MODEL_ID,
-        "runtime_ms": round((time.time() - started) * 1000),
-        "image_base64": image_to_base64(result),
-    }
+    try:
+        return run_task(payload)
+    except Exception as error:  # noqa: BLE001 - convert to a structured failure payload
+        logger.exception("Task failed: task=%s job_id=%s", task, payload.get("job_id"))
+        return {
+            "status": "failed",
+            "job_id": payload.get("job_id", "unknown"),
+            "task": task,
+            "trace_id": payload.get("trace_id", "unknown"),
+            "image_type": None,
+            "artifacts": None,
+            "runtime_ms": None,
+            "error": {
+                "code": "task_exception",
+                "stage": str(task),
+                "message": str(error)[:500],
+                "retryable": True,
+            },
+        }
 
 
 runpod.serverless.start({"handler": handler})
