@@ -327,12 +327,22 @@ def _run_imagemagick(command: list[str], action: str) -> None:
 
 
 def _get_image_dimensions(image_path: Path) -> tuple[int, int]:
-    command = [get_imagemagick_command(), "identify", "-format", "%w %h", str(image_path)]
-    try:
-        result = subprocess.run(command, check=True, capture_output=True, text=True)
-    except subprocess.CalledProcessError as error:
-        message = error.stderr.strip() or error.stdout.strip() or str(error)
-        raise RuntimeError(f"ImageMagick identify failed: {message}") from error
+    """Return image dimensions.
 
-    width_text, height_text = result.stdout.strip().split()
-    return int(width_text), int(height_text)
+    The backend shells out to `magick identify`. That only works on
+    ImageMagick 7; the worker image ships ImageMagick 6, where the binary is
+    `convert` and `convert identify ...` treats "identify" as an input
+    filename:
+
+        convert: unable to open image `identify': No such file or directory
+
+    Pillow gives the same answer without the subprocess, so the dependency is
+    dropped here rather than papered over with a version check.
+
+    This only surfaced on presets with contact_shadow enabled
+    (outdoor-black-dealership-lot) and on the reflection path, since those are
+    the only callers.
+    """
+
+    with Image.open(image_path) as image:
+        return image.width, image.height
