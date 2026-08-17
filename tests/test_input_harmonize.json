@@ -1,0 +1,17 @@
+{
+  "input": {
+    "schema_version": 1,
+    "task": "harmonize-exterior",
+    "job_id": "job_test_harmonize_0001",
+    "trace_id": "trace_test_0003",
+    "image_id": "img_test_0001",
+    "session_id": "ses_test_0001",
+    "owner_id": "usr_test_0001",
+    "background_preset_id": "indoor-neutral-showroom-clean",
+    "openai_quality": "medium",
+    "skip_ai": false,
+    "r2": {
+      "cutout_key": "mattes/usr_test_0001/ses_test_0001/img_test_0001/full-cutout-birefnet-v1.png"
+    }
+  }
+}

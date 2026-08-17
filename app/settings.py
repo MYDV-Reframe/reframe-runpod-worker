@@ -29,3 +29,29 @@ R2_SECRET_ACCESS_KEY = os.environ.get("R2_SECRET_ACCESS_KEY", "").strip()
 R2_PRIVATE_BUCKET = os.environ.get(
     "R2_PRIVATE_BUCKET", "vehicle-transform-private-dev"
 ).strip()
+
+# --- added for harmonize-exterior -------------------------------------------
+import shutil
+
+DEFAULT_OUTPUT_WIDTH = int(os.environ.get("DEFAULT_OUTPUT_WIDTH", "1600"))
+DEFAULT_OUTPUT_HEIGHT = int(os.environ.get("DEFAULT_OUTPUT_HEIGHT", "1200"))
+DEFAULT_VERTICAL_OFFSET = int(os.environ.get("DEFAULT_VERTICAL_OFFSET", "40"))
+
+OPENAI_IMAGE_MODEL = os.environ.get("OPENAI_IMAGE_MODEL", "gpt-image-2")
+OPENAI_IMAGE_QUALITY = os.environ.get("OPENAI_IMAGE_QUALITY", "medium")
+
+ASSETS_DIR = Path(os.environ.get("ASSETS_DIR", str(PROJECT_ROOT / "assets")))
+
+
+def get_imagemagick_command() -> str:
+    """Return the ImageMagick command available in this image."""
+
+    path_command = shutil.which("magick")
+    if path_command:
+        return path_command
+
+    legacy_command = shutil.which("convert")
+    if legacy_command:
+        return legacy_command
+
+    return "magick"

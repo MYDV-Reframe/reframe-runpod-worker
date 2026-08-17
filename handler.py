@@ -1,9 +1,9 @@
 """RunPod serverless entrypoint. Dispatches jobs by task type.
 
-Phase 1 scope: classify-image and refine-full-resolution-alpha only. This
-replaces the previous disconnected Stable Diffusion XL img2img prototype
-entirely - that code had no caller anywhere in the product and is not part
-of this migration.
+Phase 1 scope: classify-image and refine-full-resolution-alpha.
+Added: harmonize-exterior - the composite + OpenAI harmonisation stage from
+the backend's user_flow.py. This is the step that makes automotive glass
+transparent; without it the pipeline stops at an opaque cutout.
 """
 
 from __future__ import annotations
@@ -14,6 +14,7 @@ from typing import Callable
 import runpod
 
 from app.tasks.classify_image import run_classify_image
+from app.tasks.harmonize_exterior import run_harmonize_exterior
 from app.tasks.refine_full_alpha import run_refine_full_alpha
 
 logging.basicConfig(level=logging.INFO)
@@ -22,6 +23,7 @@ logger = logging.getLogger(__name__)
 TASKS: dict[str, Callable[[dict[str, object]], dict[str, object]]] = {
     "classify-image": run_classify_image,
     "refine-full-resolution-alpha": run_refine_full_alpha,
+    "harmonize-exterior": run_harmonize_exterior,
 }
 
 
