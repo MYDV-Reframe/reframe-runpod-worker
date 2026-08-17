@@ -1,0 +1,832 @@
+[
+  {
+    "id": "clean-white-studio",
+    "name": "Clean White Studio",
+    "category": "safe-studio",
+    "path": "assets/backgrounds/generated/clean-white-studio.png",
+    "recommended": {
+      "car_width_percent": 74,
+      "vertical_offset": 36,
+      "car_brightness": 102,
+      "car_saturation": 94,
+      "car_contrast": -2,
+      "edge_erode": 1,
+      "edge_feather": 0.5,
+      "shadow_opacity": 24,
+      "shadow_blur": 34,
+      "shadow_height": 14,
+      "shadow_vertical_offset": 10,
+      "reflection": false
+    }
+  },
+  {
+    "id": "soft-gray-studio",
+    "name": "Soft Gray Studio",
+    "category": "safe-studio",
+    "path": "assets/backgrounds/generated/soft-gray-studio.png",
+    "recommended": {
+      "car_width_percent": 74,
+      "vertical_offset": 34,
+      "car_brightness": 96,
+      "car_saturation": 92,
+      "car_contrast": -4,
+      "edge_erode": 1,
+      "edge_feather": 0.5,
+      "shadow_opacity": 28,
+      "shadow_blur": 34,
+      "shadow_height": 14,
+      "shadow_vertical_offset": 10,
+      "reflection": false
+    }
+  },
+  {
+    "id": "outdoor-concrete-lot",
+    "name": "Outdoor Concrete Lot",
+    "category": "safe-outdoor",
+    "path": "assets/backgrounds/generated/outdoor-concrete-lot.png",
+    "recommended": {
+      "car_width_percent": 78,
+      "vertical_offset": 22,
+      "car_brightness": 100,
+      "car_saturation": 96,
+      "car_contrast": -2,
+      "edge_erode": 1,
+      "edge_feather": 0.5,
+      "shadow_opacity": 18,
+      "shadow_blur": 34,
+      "shadow_height": 12,
+      "shadow_vertical_offset": 8,
+      "reflection": false
+    }
+  },
+  {
+    "id": "outdoor-black-dealership-lot",
+    "name": "Outdoor Black Dealership Lot",
+    "category": "safe-outdoor",
+    "path": "assets/backgrounds/generated/outdoor-black-dealership-lot.png",
+    "description": "Modern black industrial dealership building with roller doors, a clear blue sky and a large light-grey concrete forecourt in direct daylight.",
+    "scene": {
+      "environment": "Premium outdoor dealership forecourt",
+      "style": "Modern industrial automotive dealership",
+      "camera": {
+        "perspective": "Eye level",
+        "angle": "Straight-on",
+        "focal_length": "35mm equivalent"
+      },
+      "lighting": {
+        "type": "Clear daylight with direct sun and open-sky fill",
+        "direction": "From the upper left",
+        "softness": "Medium-hard",
+        "ambient_level": "High",
+        "colour_temperature": 5900,
+        "contrast": "Medium-high"
+      },
+      "floor": {
+        "material": "Outdoor concrete forecourt",
+        "colour": "Light grey",
+        "finish": "Natural matte concrete",
+        "reflectivity": "Low"
+      },
+      "walls": {
+        "material": "Black metal cladding and dark roller doors",
+        "colour": "Black"
+      },
+      "shadow": {
+        "style": "Medium-hard directional contact and cast shadow",
+        "direction": "Slightly right and rear from the vehicle"
+      },
+      "reflection_environment": "Clear blue sky above, black dealership facade behind and light concrete below",
+      "reflections": {
+        "permitted_pattern": "Broad blue-sky reflections on upward-facing glass, roof and bonnet surfaces; restrained dark facade bands on upright paint and glass; subtle light-grey concrete fill on lower bodywork; small crisp daylight highlights from the upper left; no indoor ceiling or LED-panel reflections",
+        "remove": "Indoor fluorescent or LED strips, workshop walls, source buildings, source signs, nearby vehicles, trees in implausible directions and every other recognisable shape inherited from the source photograph",
+        "surface_guidance": "On the side doors and rear-quarter paint, remove wavy bright patches, green colour contamination and object-shaped source reflections. Replace them with restrained continuous dark-facade bands and subtle cool open-sky fill that follow the vehicle's panel curvature and continue coherently across adjacent doors. Preserve metallic paint, clear-coat gloss, panel contours and natural specular highlights; do not make the paint matte, flat, blurred, uniformly dark or newly recoloured.",
+        "glass_guidance": "On the windscreen, use a natural non-uniform combination of clear blue-sky reflection and a restrained dark-facade influence toward the lower angle-facing glass. Avoid a flat cyan wash or generic studio reflection. Keep the glass transparent enough for realistic cabin visibility and preserve the windscreen frame, mirror, dashboard and occupants if present."
+      },
+      "overall_look": "Clean, bright, naturally photographed outdoor dealership listing"
+    },
+    "placement": {
+      "default_width_percent": 72,
+      "default_floor_line_percent": 94,
+      "default_horizontal_offset": 0,
+      "minimum_vehicle_top_percent": 28,
+      "pose_rules": {
+        "front": {
+          "min_width_percent": 54,
+          "target_width_percent": 62,
+          "max_width_percent": 66,
+          "max_height_percent": 58,
+          "aspect_ratio_min": 0.85,
+          "aspect_ratio_max": 1.35
+        },
+        "three_quarter": {
+          "min_width_percent": 62,
+          "target_width_percent": 70,
+          "max_width_percent": 74,
+          "max_height_percent": 60,
+          "aspect_ratio_min": 1.35,
+          "aspect_ratio_max": 1.85
+        },
+        "side": {
+          "min_width_percent": 78,
+          "target_width_percent": 82,
+          "max_width_percent": 84,
+          "max_height_percent": 64,
+          "aspect_ratio_min": 1.85,
+          "aspect_ratio_max": 2.65
+        }
+      }
+    },
+    "render": {
+      "vehicle_adjustments": {
+        "brightness": 100,
+        "contrast": 0,
+        "saturation": 96,
+        "warmth": 0
+      },
+      "edges": {
+        "erode": 1,
+        "feather": 0.5
+      },
+      "shadow": {
+        "opacity": 30,
+        "blur": 18,
+        "height": 12,
+        "vertical_offset": 8
+      },
+      "contact_shadow": {
+        "enabled": true,
+        "opacity": 22,
+        "blur": 4,
+        "band_percent": 3
+      },
+      "reflection": {
+        "enabled": false,
+        "strength": 0
+      }
+    },
+    "harmonisation": {
+      "objective": "Transform the completed composite into a natural single-exposure outdoor dealership photograph while matching the clear-day lighting and replacing all source-environment reflections.",
+      "replace_original_reflections": true,
+      "update_glass_reflections": true,
+      "update_paint_reflections": true,
+      "match_background_lighting": true,
+      "match_colour_temperature": true,
+      "remove_source_environment": true,
+      "improve_grounding": true,
+      "retain_interior_visibility": true,
+      "preserve_background": true,
+      "quality_target": "Visually indistinguishable from an authentic vehicle listing photograph captured naturally on this outdoor dealership forecourt."
+    }
+  },
+  {
+    "id": "indoor-showroom-led-checker",
+    "name": "Indoor Showroom LED Checker",
+    "category": "safe-showroom",
+    "path": "assets/backgrounds/generated/indoor-showroom-led-01.png",
+    "recommended": {
+      "car_width_percent": 72,
+      "vertical_offset": 38,
+      "car_brightness": 100,
+      "car_saturation": 94,
+      "car_contrast": -3,
+      "edge_erode": 1,
+      "edge_feather": 0.5,
+      "shadow_opacity": 22,
+      "shadow_blur": 32,
+      "shadow_height": 14,
+      "shadow_vertical_offset": 10,
+      "reflection": false
+    }
+  },
+  {
+    "id": "indoor-showroom-led-dark",
+    "name": "Indoor Showroom LED Dark",
+    "category": "safe-showroom",
+    "path": "assets/backgrounds/generated/indoor-showroom-led-02.png",
+    "recommended": {
+      "car_width_percent": 72,
+      "vertical_offset": 36,
+      "car_brightness": 96,
+      "car_saturation": 92,
+      "car_contrast": -4,
+      "edge_erode": 1,
+      "edge_feather": 0.5,
+      "shadow_opacity": 26,
+      "shadow_blur": 34,
+      "shadow_height": 14,
+      "shadow_vertical_offset": 10,
+      "reflection": false
+    }
+  },
+  {
+    "id": "indoor-showroom-led-bright",
+    "name": "Indoor Showroom LED Bright",
+    "category": "safe-showroom",
+    "path": "assets/backgrounds/generated/indoor-showroom-led-03.png",
+    "description": "Premium unbranded indoor dealership showroom with polished grey porcelain flooring, grey stone-effect wall panels and soft overhead LED lighting.",
+    "scene": {
+      "environment": "Premium indoor dealership showroom",
+      "style": "Modern luxury showroom",
+      "camera": {
+        "perspective": "Eye level",
+        "angle": "Straight-on",
+        "focal_length": "35mm equivalent"
+      },
+      "lighting": {
+        "type": "Large LED ceiling panels with recessed spotlights",
+        "direction": "Overhead",
+        "softness": "Soft",
+        "ambient_level": "Medium",
+        "colour_temperature": 4300,
+        "contrast": "Medium"
+      },
+      "floor": {
+        "material": "Large polished porcelain tiles",
+        "colour": "Light grey",
+        "finish": "Semi-gloss",
+        "reflectivity": "Medium"
+      },
+      "walls": {
+        "material": "Stone-effect panels",
+        "colour": "Medium grey"
+      },
+      "shadow": {
+        "style": "Soft diffuse",
+        "direction": "Directly beneath the vehicle with slight rear bias"
+      },
+      "reflection_environment": "Premium indoor showroom",
+      "reflections": {
+        "permitted_pattern": "Broad soft rectangular highlights from overhead LED ceiling panels and small diffuse recessed-spot highlights",
+        "remove": "Workshop walls, doors, signs, nearby vehicles and source-scene objects",
+        "surface_guidance": "Preserve the physically plausible showroom reflections already established on the vehicle. Improve only the paint finish by adding natural clear-coat lustre, richer original paint-colour depth and slightly stronger specular contrast with smooth highlight falloff across curved panels. Do not remove, reposition, redraw or dim the existing overhead LED and recessed-spot reflections. Do not change the vehicle's paint colour, over-saturate it, flatten it, make it matte, or create artificial HDR, plastic or CGI shine."
+      },
+      "overall_look": "Clean, premium, professionally photographed dealership showroom"
+    },
+    "placement": {
+      "default_width_percent": 70,
+      "default_floor_line_percent": 93,
+      "default_horizontal_offset": 0,
+      "vehicle_classes": {
+        "city_car": 1.05,
+        "hatchback": 1.02,
+        "saloon": 1.0,
+        "estate": 0.98,
+        "coupe": 1.0,
+        "convertible": 1.0,
+        "suv": 0.95,
+        "large_suv": 0.92,
+        "pickup": 0.9,
+        "van": 0.88
+      },
+      "pose_rules": {
+        "front": {
+          "min_width_percent": 56,
+          "target_width_percent": 64,
+          "max_width_percent": 68,
+          "max_height_percent": 56
+        },
+        "three-quarter": {
+          "min_width_percent": 60,
+          "target_width_percent": 68,
+          "max_width_percent": 72,
+          "max_height_percent": 58
+        },
+        "side": {
+          "min_width_percent": 78,
+          "target_width_percent": 82,
+          "max_width_percent": 86,
+          "max_height_percent": 66
+        }
+      }
+    },
+    "render": {
+      "vehicle_adjustments": {
+        "brightness": 100,
+        "contrast": -2,
+        "saturation": 94,
+        "warmth": 2
+      },
+      "edges": {
+        "erode": 1,
+        "feather": 0.5
+      },
+      "shadow": {
+        "opacity": 24,
+        "blur": 34,
+        "height": 14,
+        "vertical_offset": 10
+      },
+      "reflection": {
+        "enabled": false,
+        "strength": 0
+      }
+    },
+    "harmonisation": {
+      "objective": "Transform the composite into a natural single-exposure indoor dealership photograph while preserving the exact vehicle and showroom.",
+      "reference_environment": "Premium indoor LED showroom",
+      "lighting_priority": [
+        "Match the soft overhead LED lighting",
+        "Replace source-scene reflections on glass and paint",
+        "Adopt the showroom colour temperature",
+        "Preserve the showroom architecture and any confirmed wall sign"
+      ],
+      "glass": {
+        "replace_original_reflections": true,
+        "retain_interior_visibility": true,
+        "reflection_style": "Soft indoor showroom reflections"
+      },
+      "paint": {
+        "remove_source_environment": true,
+        "reflection_style": "Controlled glossy indoor reflections"
+      },
+      "quality_target": "Visually indistinguishable from an authentic dealership photograph"
+    },
+    "recommended": {
+      "car_width_percent": 72,
+      "vertical_offset": 36,
+      "car_brightness": 102,
+      "car_saturation": 94,
+      "car_contrast": -2,
+      "edge_erode": 1,
+      "edge_feather": 0.5,
+      "shadow_opacity": 24,
+      "shadow_blur": 34,
+      "shadow_height": 14,
+      "shadow_vertical_offset": 10,
+      "reflection": false
+    }
+  },
+  {
+    "id": "branded-autoprestige-led",
+    "name": "Branded Autoprestige LED Showroom",
+    "category": "branded-showroom",
+    "path": "assets/backgrounds/generated/branded/led03-autoprestige-ai-blended-banner.png",
+    "recommended": {
+      "car_width_percent": 70,
+      "vertical_offset": 36,
+      "car_brightness": 102,
+      "car_saturation": 94,
+      "car_contrast": -2,
+      "edge_erode": 1,
+      "edge_feather": 0.5,
+      "shadow_opacity": 24,
+      "shadow_blur": 34,
+      "shadow_height": 14,
+      "shadow_vertical_offset": 10,
+      "reflection": false,
+      "pose_rules": {
+        "front": {
+          "max_car_width_percent": 66,
+          "max_car_height_percent": 64,
+          "floor_line_percent": 94,
+          "horizontal_offset": 0
+        },
+        "three-quarter": {
+          "max_car_width_percent": 70,
+          "max_car_height_percent": 62,
+          "floor_line_percent": 93,
+          "horizontal_offset": 0
+        },
+        "side": {
+          "max_car_width_percent": 74,
+          "max_car_height_percent": 60,
+          "floor_line_percent": 93,
+          "horizontal_offset": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "branded-mwa-panel-high",
+    "name": "Branded MWA Panel High Banner",
+    "category": "branded-showroom",
+    "path": "assets/backgrounds/generated/branded/indoor2-mwa-ai-blended-banner-high.png",
+    "recommended": {
+      "car_width_percent": 70,
+      "vertical_offset": 34,
+      "car_brightness": 96,
+      "car_saturation": 90,
+      "car_contrast": -5,
+      "edge_erode": 1,
+      "edge_feather": 0.5,
+      "shadow_opacity": 30,
+      "shadow_blur": 36,
+      "shadow_height": 14,
+      "shadow_vertical_offset": 10,
+      "reflection": false,
+      "pose_rules": {
+        "front": {
+          "max_car_width_percent": 62,
+          "max_car_height_percent": 58,
+          "floor_line_percent": 94,
+          "horizontal_offset": 0
+        },
+        "three-quarter": {
+          "max_car_width_percent": 68,
+          "max_car_height_percent": 58,
+          "floor_line_percent": 93,
+          "horizontal_offset": 0
+        },
+        "side": {
+          "max_car_width_percent": 72,
+          "max_car_height_percent": 56,
+          "floor_line_percent": 93,
+          "horizontal_offset": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "branded-motortime-led",
+    "name": "Motor Time Premium LED Showroom",
+    "category": "branded-showroom",
+    "path": "assets/backgrounds/generated/branded/led03-motortime-ai-blended-banner.png",
+    "description": "Premium indoor dealership showroom with polished grey porcelain flooring, grey stone-effect wall panels, a suspended branded banner and soft overhead LED lighting.",
+    "scene": {
+      "environment": "Premium indoor dealership showroom",
+      "style": "Modern luxury showroom",
+      "camera": {
+        "perspective": "Eye level",
+        "angle": "Straight-on",
+        "focal_length": "35mm equivalent"
+      },
+      "lighting": {
+        "type": "Large LED ceiling panels with recessed spotlights",
+        "direction": "Overhead",
+        "softness": "Soft",
+        "ambient_level": "Medium",
+        "colour_temperature": 4300,
+        "contrast": "Medium"
+      },
+      "floor": {
+        "material": "Large polished porcelain tiles",
+        "colour": "Light grey",
+        "finish": "Semi-gloss",
+        "reflectivity": "Medium"
+      },
+      "walls": {
+        "material": "Stone-effect panels",
+        "colour": "Medium grey"
+      },
+      "shadow": {
+        "style": "Soft diffuse",
+        "direction": "Directly beneath the vehicle with slight rear bias"
+      },
+      "reflection_environment": "Premium indoor showroom",
+      "reflections": {
+        "permitted_pattern": "Broad soft rectangular highlights from the large overhead LED ceiling panels, plus small diffuse recessed-spot highlights; restrained intensity and no recognisable scene objects",
+        "remove": "Long narrow fluorescent strip reflections, workshop walls, doors, signs, nearby vehicles and all other shapes inherited from the source photograph"
+      },
+      "overall_look": "Clean, premium, professionally photographed dealership showroom"
+    },
+    "placement": {
+      "default_width_percent": 70,
+      "default_floor_line_percent": 93,
+      "default_horizontal_offset": 0,
+      "minimum_vehicle_top_percent": 40,
+      "vehicle_classes": {
+        "city_car": 1.05,
+        "hatchback": 1.02,
+        "saloon": 1.0,
+        "estate": 0.98,
+        "coupe": 1.0,
+        "convertible": 1.0,
+        "suv": 0.95,
+        "large_suv": 0.92,
+        "pickup": 0.9,
+        "van": 0.88
+      },
+      "pose_rules": {
+        "front": {
+          "min_width_percent": 56,
+          "target_width_percent": 64,
+          "max_width_percent": 66,
+          "max_height_percent": 50,
+          "aspect_ratio_min": 0.85,
+          "aspect_ratio_max": 1.35
+        },
+        "three-quarter": {
+          "min_width_percent": 58,
+          "target_width_percent": 66,
+          "max_width_percent": 68,
+          "max_height_percent": 53,
+          "aspect_ratio_min": 1.35,
+          "aspect_ratio_max": 1.85
+        },
+        "side": {
+          "min_width_percent": 78,
+          "target_width_percent": 82,
+          "max_width_percent": 84,
+          "max_height_percent": 64,
+          "aspect_ratio_min": 1.85,
+          "aspect_ratio_max": 2.65
+        }
+      }
+    },
+    "render": {
+      "vehicle_adjustments": {
+        "brightness": 100,
+        "contrast": -2,
+        "saturation": 94,
+        "warmth": 2
+      },
+      "edges": {
+        "erode": 1,
+        "feather": 0.5
+      },
+      "shadow": {
+        "opacity": 24,
+        "blur": 34,
+        "height": 14,
+        "vertical_offset": 10
+      },
+      "reflection": {
+        "enabled": false,
+        "strength": 0
+      }
+    },
+    "harmonisation": {
+      "objective": "Transform the completed composite into a natural single-exposure dealership photograph.",
+      "replace_original_reflections": true,
+      "update_glass_reflections": true,
+      "update_paint_reflections": true,
+      "match_background_lighting": true,
+      "match_colour_temperature": true,
+      "remove_source_environment": true,
+      "improve_grounding": true,
+      "retain_interior_visibility": true,
+      "preserve_background": true,
+      "preserve_existing_signage": true,
+      "quality_target": "Visually indistinguishable from an authentic dealership photograph captured naturally in this showroom."
+    }
+  },
+  {
+    "id": "indoor-neutral-showroom-clean",
+    "name": "Indoor Neutral Showroom",
+    "category": "safe-showroom",
+    "path": "assets/backgrounds/generated/indoor-neutral-showroom-clean.png",
+    "description": "Clean neutral indoor dealership photo bay with a warm-grey feature wall, tiled floor, overhead ceiling panels, soft spotlights and an empty exterior approach visible at the left opening.",
+    "scene": {
+      "environment": "Clean indoor dealership photo bay",
+      "style": "Modern neutral vehicle showroom",
+      "camera": {
+        "perspective": "Eye level",
+        "angle": "Straight-on",
+        "focal_length": "35mm equivalent"
+      },
+      "lighting": {
+        "type": "Large rectangular ceiling panels with soft recessed spotlights and restrained daylight fill from the left opening",
+        "direction": "Predominantly overhead with subtle fill from camera left",
+        "softness": "Soft",
+        "ambient_level": "Medium-high",
+        "colour_temperature": 4400,
+        "contrast": "Medium"
+      },
+      "floor": {
+        "material": "Large porcelain showroom tiles",
+        "colour": "Warm light grey",
+        "finish": "Satin semi-gloss",
+        "reflectivity": "Low-medium"
+      },
+      "walls": {
+        "material": "Smooth painted feature wall",
+        "colour": "Warm neutral grey"
+      },
+      "shadow": {
+        "style": "Soft diffuse contact and underbody shadow",
+        "direction": "Directly beneath the vehicle with a slight right bias"
+      },
+      "reflection_environment": "Neutral indoor showroom with broad overhead panels, small soft spotlights and restrained daylight from the left",
+      "reflections": {
+        "permitted_pattern": "Broad soft rectangular ceiling-panel highlights on roof, glass and upward-facing paint; small diffuse spot highlights; subtle cool daylight fill from the left opening; restrained warm-grey wall and tiled-floor colour bleed",
+        "remove": "Source buildings, workshop walls, outdoor sky, trees, signs, nearby vehicles, people, fluorescent strips and every other recognisable reflection inherited from the source photograph",
+        "surface_guidance": "Preserve natural clear-coat gloss and panel curvature. Replace source-scene shapes with restrained broad ceiling highlights and soft neutral wall/floor gradients; do not make paint matte, uniformly bright or artificially polished.",
+        "glass_guidance": "Keep automotive glass transparent with realistic cabin visibility. Use soft overhead panel reflections and subtle left-side daylight without showing a parked vehicle, source signage or unrelated outdoor scenery."
+      },
+      "overall_look": "Clean, neutral and naturally photographed indoor dealership listing"
+    },
+    "placement": {
+      "default_width_percent": 72,
+      "default_floor_line_percent": 94,
+      "default_horizontal_offset": 0,
+      "minimum_vehicle_top_percent": 25,
+      "pose_rules": {
+        "front": {
+          "min_width_percent": 54,
+          "target_width_percent": 62,
+          "max_width_percent": 66,
+          "max_height_percent": 60,
+          "aspect_ratio_min": 0.85,
+          "aspect_ratio_max": 1.35
+        },
+        "three_quarter": {
+          "min_width_percent": 62,
+          "target_width_percent": 70,
+          "max_width_percent": 74,
+          "max_height_percent": 62,
+          "aspect_ratio_min": 1.35,
+          "aspect_ratio_max": 1.85
+        },
+        "side": {
+          "min_width_percent": 78,
+          "target_width_percent": 82,
+          "max_width_percent": 84,
+          "max_height_percent": 64,
+          "aspect_ratio_min": 1.85,
+          "aspect_ratio_max": 2.65
+        }
+      }
+    },
+    "render": {
+      "vehicle_adjustments": {
+        "brightness": 99,
+        "contrast": -2,
+        "saturation": 94,
+        "warmth": 2
+      },
+      "edges": {
+        "erode": 1,
+        "feather": 0.5
+      },
+      "shadow": {
+        "opacity": 25,
+        "blur": 32,
+        "height": 14,
+        "vertical_offset": 10
+      },
+      "reflection": {
+        "enabled": false,
+        "strength": 0
+      }
+    },
+    "harmonisation": {
+      "objective": "Transform the completed composite into a natural single-exposure photograph captured in this neutral indoor dealership photo bay.",
+      "replace_original_reflections": true,
+      "update_glass_reflections": true,
+      "update_paint_reflections": true,
+      "match_background_lighting": true,
+      "match_colour_temperature": true,
+      "remove_source_environment": true,
+      "improve_grounding": true,
+      "retain_interior_visibility": true,
+      "preserve_background": true,
+      "preserve_existing_signage": true,
+      "quality_target": "Visually indistinguishable from an authentic dealership listing photograph captured naturally in this room."
+    }
+  },
+  {
+    "id": "indoor-bright-glass-showroom-clean",
+    "name": "Indoor Bright Glass Showroom",
+    "category": "safe-showroom",
+    "path": "assets/backgrounds/generated/indoor-bright-glass-showroom-clean.png",
+    "description": "Bright neutral indoor dealership photo bay with a full-height glass wall, cool-grey feature wall, tiled floor, overhead ceiling panels and an empty exterior approach.",
+    "scene": {
+      "environment": "Bright indoor dealership photo bay",
+      "style": "Modern bright neutral showroom",
+      "camera": {
+        "perspective": "Eye level",
+        "angle": "Straight-on",
+        "focal_length": "35mm equivalent"
+      },
+      "lighting": {
+        "type": "Large rectangular ceiling panels with soft recessed spotlights and broad daylight through the left glass wall",
+        "direction": "Predominantly overhead with soft daylight fill from camera left",
+        "softness": "Soft",
+        "ambient_level": "High",
+        "colour_temperature": 5000,
+        "contrast": "Medium-low"
+      },
+      "floor": {
+        "material": "Large porcelain showroom tiles",
+        "colour": "Cool light grey",
+        "finish": "Satin semi-gloss",
+        "reflectivity": "Low-medium"
+      },
+      "walls": {
+        "material": "Smooth painted feature wall",
+        "colour": "Cool neutral grey"
+      },
+      "shadow": {
+        "style": "Soft diffuse contact and underbody shadow",
+        "direction": "Directly beneath the vehicle with a slight right bias"
+      },
+      "reflection_environment": "Bright neutral indoor showroom with broad overhead panels and cool daylight from the left glass wall",
+      "reflections": {
+        "permitted_pattern": "Broad soft rectangular ceiling-panel highlights on roof, glass and upward-facing paint; small diffuse spot highlights; cool daylight and subtle outdoor greenery from the left glass wall; restrained grey wall and tiled-floor colour bleed",
+        "remove": "Source buildings, workshop walls, parked vehicles, signs, people, fluorescent strips and every other recognisable reflection inherited from the source photograph",
+        "surface_guidance": "Preserve natural clear-coat gloss and panel curvature. Replace source-scene shapes with restrained broad ceiling highlights, soft left-side daylight and neutral wall/floor gradients; do not make paint matte, uniformly bright or artificially polished.",
+        "glass_guidance": "Keep automotive glass transparent with realistic cabin visibility. Use soft overhead panel reflections and cool left-side daylight with only subtle trees and empty pavement; never show parked vehicles, source signage or unrelated scenery."
+      },
+      "overall_look": "Bright, clean and naturally photographed indoor dealership listing"
+    },
+    "placement": {
+      "default_width_percent": 72,
+      "default_floor_line_percent": 94,
+      "default_horizontal_offset": 0,
+      "minimum_vehicle_top_percent": 25,
+      "pose_rules": {
+        "front": {
+          "min_width_percent": 54,
+          "target_width_percent": 62,
+          "max_width_percent": 66,
+          "max_height_percent": 60,
+          "aspect_ratio_min": 0.85,
+          "aspect_ratio_max": 1.35
+        },
+        "three_quarter": {
+          "min_width_percent": 62,
+          "target_width_percent": 70,
+          "max_width_percent": 74,
+          "max_height_percent": 62,
+          "aspect_ratio_min": 1.35,
+          "aspect_ratio_max": 1.85
+        },
+        "side": {
+          "min_width_percent": 78,
+          "target_width_percent": 82,
+          "max_width_percent": 84,
+          "max_height_percent": 64,
+          "aspect_ratio_min": 1.85,
+          "aspect_ratio_max": 2.65
+        }
+      }
+    },
+    "render": {
+      "vehicle_adjustments": {
+        "brightness": 101,
+        "contrast": -2,
+        "saturation": 94,
+        "warmth": 0
+      },
+      "edges": {
+        "erode": 1,
+        "feather": 0.5
+      },
+      "shadow": {
+        "opacity": 24,
+        "blur": 32,
+        "height": 14,
+        "vertical_offset": 10
+      },
+      "reflection": {
+        "enabled": false,
+        "strength": 0
+      }
+    },
+    "harmonisation": {
+      "objective": "Transform the completed composite into a natural single-exposure photograph captured in this bright indoor dealership photo bay.",
+      "replace_original_reflections": true,
+      "update_glass_reflections": true,
+      "update_paint_reflections": true,
+      "match_background_lighting": true,
+      "match_colour_temperature": true,
+      "remove_source_environment": true,
+      "improve_grounding": true,
+      "retain_interior_visibility": true,
+      "preserve_background": true,
+      "preserve_existing_signage": true,
+      "quality_target": "Visually indistinguishable from an authentic dealership listing photograph captured naturally in this room."
+    }
+  },
+  {
+    "id": "indoor-mwa-empty-showroom",
+    "name": "Indoor MWA Empty Showroom",
+    "category": "custom-showroom",
+    "path": "assets/backgrounds/generated/indoor-mwa-empty-showroom.png",
+    "recommended": {
+      "car_width_percent": 74,
+      "vertical_offset": 32,
+      "car_brightness": 98,
+      "car_saturation": 90,
+      "car_contrast": -5,
+      "car_warmth": 5,
+      "edge_erode": 1,
+      "edge_feather": 0.5,
+      "shadow_opacity": 30,
+      "shadow_blur": 36,
+      "shadow_height": 14,
+      "shadow_vertical_offset": 10,
+      "reflection": false,
+      "pose_rules": {
+        "front": {
+          "max_car_width_percent": 58,
+          "max_car_height_percent": 68,
+          "floor_line_percent": 94,
+          "horizontal_offset": 0
+        },
+        "three-quarter": {
+          "max_car_width_percent": 58,
+          "max_car_height_percent": 63,
+          "floor_line_percent": 92,
+          "horizontal_offset": 95
+        },
+        "side": {
+          "max_car_width_percent": 64,
+          "max_car_height_percent": 64,
+          "floor_line_percent": 92,
+          "horizontal_offset": 100
+        }
+      }
+    }
+  }
+]
