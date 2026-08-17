@@ -4,3 +4,4 @@ rembg
 openai
 boto3
 pillow
+opencv-python-headless

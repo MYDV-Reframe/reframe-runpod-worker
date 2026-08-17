@@ -10,16 +10,15 @@ This is the stage that makes automotive glass transparent. Segmentation
 produces an opaque silhouette; harmonisation replaces what shows through the
 windows with the selected environment.
 
-Phase 1 simplification: the backend chooses placement via
-processing/opencv_geometry.py:analyze_car_geometry(). OpenCV is not in this
-image, so placement falls back to the backend's own legacy path
-(user_flow.py:analyze_cutout + aspect-ratio bands), which is pure PIL. The
-caller can override placement entirely by passing a `placement` block in the
-payload. Port opencv_geometry.py to close this gap.
+Placement uses opencv_geometry.analyze_car_geometry(), same as the backend,
+falling back to the backend's own legacy aspect-ratio path if OpenCV is
+unavailable. Callers can override placement entirely via a `placement` block
+in the payload.
 """
 
 from __future__ import annotations
 
+import logging
 import tempfile
 import time
 from pathlib import Path
@@ -33,6 +32,7 @@ from app.pipeline.compositor import (
     ProcessingRequest,
     process_car_image,
 )
+from app.pipeline.opencv_geometry import analyze_car_geometry
 from app.pipeline.openai_harmonization import (
     build_harmonization_prompt,
     harmonize_with_openai,
@@ -45,6 +45,8 @@ from app.settings import (
 )
 from app.storage.r2_client import R2Client, private_object_key
 
+logger = logging.getLogger(__name__)
+
 
 def _pick(profile: dict, preset: dict, key: str, default: Any) -> Any:
     if key in profile:
@@ -55,17 +57,17 @@ def _pick(profile: dict, preset: dict, key: str, default: Any) -> Any:
 
 
 def analyze_cutout(cutout_path: Path) -> dict[str, float]:
-    """Measure visible alpha bounds for fallback placement.
-
-    Copied from the backend's user_flow.py.
-    """
+    """Measure visible alpha bounds for fallback placement. From user_flow.py."""
 
     with Image.open(cutout_path) as image:
         image = image.convert("RGBA")
         bbox = image.getchannel("A").getbbox()
         if bbox is None:
-            return {"aspect_ratio": 1.8, "visible_width_ratio": 1.0,
-                    "visible_height_ratio": 1.0}
+            return {
+                "aspect_ratio": 1.8,
+                "visible_width_ratio": 1.0,
+                "visible_height_ratio": 1.0,
+            }
 
         left, top, right, bottom = bbox
         visible_width = max(1, right - left)
@@ -77,10 +79,46 @@ def analyze_cutout(cutout_path: Path) -> dict[str, float]:
         }
 
 
-def build_legacy_profile(cutout_path: Path, preset_options: dict) -> dict[str, Any]:
-    """Backend's legacy (non-OpenCV) placement path from user_flow.py."""
+def build_auto_profile(
+    cutout_path: Path,
+    preset_options: dict,
+    width: int,
+    height: int,
+    placement_engine: str = "opencv",
+) -> dict[str, Any]:
+    """Choose placement from the cutout. Ported from user_flow.py."""
 
-    aspect_ratio = analyze_cutout(cutout_path)["aspect_ratio"]
+    if placement_engine == "opencv":
+        try:
+            hints = analyze_car_geometry(
+                cutout_path=cutout_path,
+                output_width=width,
+                output_height=height,
+                preset_options=preset_options,
+            )
+            return {
+                "car_width_percent": hints.car_width_percent,
+                "car_height_percent": hints.car_height_percent,
+                "vertical_offset": hints.vertical_offset,
+                "horizontal_offset": hints.horizontal_offset,
+                "_placement_engine": "opencv",
+                "_pose": hints.pose,
+                "_aspect_ratio": hints.aspect_ratio,
+                "_contact_width_ratio": hints.contact_width_ratio,
+                "_floor_line_percent": hints.floor_line_percent,
+                "_visible_width_pixels": hints.visible_width_pixels,
+                "_visible_height_pixels": hints.visible_height_pixels,
+                "_sizing_strategy": hints.sizing_strategy,
+                "_camera_angle_risk": hints.camera_angle_risk,
+                "_reflection_risk": hints.reflection_risk,
+                "_median_luminance": hints.median_luminance,
+                "_bright_pixel_ratio": hints.bright_pixel_ratio,
+            }
+        except Exception as error:  # noqa: BLE001 - matches backend behaviour
+            logger.warning("OpenCV placement failed, using legacy placement: %s", error)
+
+    analysis = analyze_cutout(cutout_path)
+    aspect_ratio = analysis["aspect_ratio"]
 
     if aspect_ratio >= 2.35:
         car_width_percent, vertical_offset, pose = 82, 24, "side"
@@ -153,8 +191,7 @@ def build_options(width, height, profile, preset) -> ProcessingOptions:
 def create_editor_cutout(cutout_path, editor_cutout_path, options) -> dict[str, int]:
     """Trim/resize the vehicle layer and return exact canvas placement.
 
-    Copied from the backend's user_flow.py so the mask lines up with what the
-    ImageMagick composite produces.
+    From user_flow.py, so the mask lines up with the ImageMagick composite.
     """
 
     with Image.open(cutout_path) as image:
@@ -183,8 +220,10 @@ def create_editor_cutout(cutout_path, editor_cutout_path, options) -> dict[str, 
             image = image.resize((tw, th), Image.Resampling.LANCZOS)
         elif options.car_scale_percent != 100:
             image = image.resize(
-                (round(image.width * options.car_scale_percent / 100),
-                 round(image.height * options.car_scale_percent / 100)),
+                (
+                    round(image.width * options.car_scale_percent / 100),
+                    round(image.height * options.car_scale_percent / 100),
+                ),
                 Image.Resampling.LANCZOS,
             )
 
@@ -194,15 +233,27 @@ def create_editor_cutout(cutout_path, editor_cutout_path, options) -> dict[str, 
     x = round((options.output_width - image.width) / 2 + options.horizontal_offset)
     y = options.output_height - image.height - options.vertical_offset
     return {
-        "x": x, "y": y, "width": image.width, "height": image.height,
-        "canvas_width": options.output_width, "canvas_height": options.output_height,
-        "source_width": source_width, "source_height": source_height,
+        "x": x,
+        "y": y,
+        "width": image.width,
+        "height": image.height,
+        "canvas_width": options.output_width,
+        "canvas_height": options.output_height,
+        "source_width": source_width,
+        "source_height": source_height,
         "scale_factor": round(image.width / max(1, source_width), 4),
     }
 
 
-def create_openai_edit_assets(*, base_preview_path, editor_cutout_path, placement,
-                              input_path, mask_path, edge_allowance_pixels=4) -> None:
+def create_openai_edit_assets(
+    *,
+    base_preview_path,
+    editor_cutout_path,
+    placement,
+    input_path,
+    mask_path,
+    edge_allowance_pixels=4,
+) -> None:
     """Create same-size PNG image and vehicle-only mask. From user_flow.py."""
 
     canvas_size = (int(placement["canvas_width"]), int(placement["canvas_height"]))
@@ -237,6 +288,7 @@ def run_harmonize_exterior(payload: dict[str, object]) -> dict[str, object]:
     width = int(payload.get("output_width", DEFAULT_OUTPUT_WIDTH))
     height = int(payload.get("output_height", DEFAULT_OUTPUT_HEIGHT))
     openai_quality = str(payload.get("openai_quality", OPENAI_IMAGE_QUALITY))
+    placement_engine = str(payload.get("placement_engine", "opencv"))
     skip_ai = bool(payload.get("skip_ai", False))
 
     r2_input = payload["r2"]
@@ -263,7 +315,13 @@ def run_harmonize_exterior(payload: dict[str, object]) -> dict[str, object]:
             profile_options.setdefault("_placement_engine", "payload-override")
             profile_options.setdefault("_pose", "unknown")
         else:
-            profile_options = build_legacy_profile(cutout_path, preset_options)
+            profile_options = build_auto_profile(
+                cutout_path=cutout_path,
+                preset_options=preset_options,
+                width=width,
+                height=height,
+                placement_engine=placement_engine,
+            )
 
         options = build_options(width, height, profile_options, preset_options)
 
@@ -272,7 +330,11 @@ def run_harmonize_exterior(payload: dict[str, object]) -> dict[str, object]:
             "vehicle_class": str(payload.get("vehicle_class", "unknown")),
             "class_confidence": 0.0,
             "cutout_aspect_ratio": profile_options.get("_aspect_ratio"),
-            "reflection_risk": bool(payload.get("reflection_risk", False)),
+            "contact_width_ratio": profile_options.get("_contact_width_ratio"),
+            "camera_angle_risk": profile_options.get("_camera_angle_risk", False),
+            "reflection_risk": profile_options.get("_reflection_risk", False),
+            "median_luminance": profile_options.get("_median_luminance"),
+            "bright_pixel_ratio": profile_options.get("_bright_pixel_ratio"),
         }
         prompt = build_harmonization_prompt(
             preset_name=preset.name,
@@ -323,10 +385,10 @@ def run_harmonize_exterior(payload: dict[str, object]) -> dict[str, object]:
         final_bytes = final_path.read_bytes()
 
     base_key = private_object_key(
-        "previews", owner_id, session_id, image_id, "base-preview-v1.jpg"
+        "previews", owner_id, session_id, image_id, f"base-preview-{preset.id}.jpg"
     )
     final_key = private_object_key(
-        "exports", owner_id, session_id, image_id, "harmonised-v1.jpg"
+        "exports", owner_id, session_id, image_id, f"harmonised-{preset.id}.jpg"
     )
 
     base_response = storage.put_bytes(base_key, base_bytes, "image/jpeg")
@@ -354,6 +416,7 @@ def run_harmonize_exterior(payload: dict[str, object]) -> dict[str, object]:
         },
         "background_preset_id": preset.id,
         "placement": editor_placement,
+        "placement_analysis": profile_options,
         "ai_skipped": skip_ai,
         "runtime_ms": _elapsed_ms(started),
         "error": None,

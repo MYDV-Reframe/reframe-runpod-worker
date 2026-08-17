@@ -305,3 +305,54 @@ def harmonize_with_openai(
     raw_output_path.write_bytes(decode_image_response(response))
     normalize_size(raw_output_path, output_path, width, height)
     return output_path
+
+
+def harmonize_interior_with_openai(
+    *,
+    interior_path: Path,
+    background_reference_path: Path,
+    output_path: Path,
+    prompt: str,
+    model: str,
+    quality: str,
+    width: int,
+    height: int,
+    compression: int = 92,
+) -> Path:
+    """Edit an interior with a scene reference and normalize it as the final.
+
+    Ported from the backend. Unlike the exterior path this sends two images -
+    the cabin photo and the selected environment - with no mask, because the
+    edit is scoped by the prompt rather than by a vehicle silhouette.
+    """
+
+    require_api_key()
+
+    from openai import OpenAI
+
+    for path in (interior_path, background_reference_path):
+        if not path.exists():
+            raise FileNotFoundError(f"Interior edit asset not found: {path}")
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    raw_output_path = output_path.with_suffix(".openai-raw.jpeg")
+    request_options = {
+        "model": model,
+        "prompt": prompt,
+        "size": f"{width}x{height}",
+        "quality": quality,
+        "output_format": "jpeg",
+        "output_compression": max(0, min(compression, 100)),
+    }
+    with (
+        interior_path.open("rb") as interior_file,
+        background_reference_path.open("rb") as background_file,
+    ):
+        response = OpenAI().images.edit(
+            image=[interior_file, background_file],
+            **request_options,
+        )
+
+    raw_output_path.write_bytes(decode_image_response(response))
+    normalize_size(raw_output_path, output_path, width, height)
+    return output_path

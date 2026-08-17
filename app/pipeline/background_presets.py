@@ -1,23 +1,22 @@
 """Background preset loading for the worker.
 
-Ported from the backend's core/background_presets.py, trimmed to what the
-harmonize task needs. The backend's shadow_spec normalisation is not ported;
-this reads the flat `recommended` block plus the canonical `placement` and
-`render` sections directly.
+Ported from the backend's core/background_presets.py. The backend's
+shadow_spec normalisation is not ported; this reads the flat `recommended`
+block plus the canonical `placement` and `render` sections directly.
 
-Presets and their images are baked into the worker image at /app/assets, see
-the Dockerfile COPY step.
+Presets and their images are baked into the worker image under ASSETS_DIR,
+see the Dockerfile COPY step.
 """
 
 from __future__ import annotations
 
 import json
-import os
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
 from app.settings import ASSETS_DIR
+
 PRESETS_FILE = ASSETS_DIR / "backgrounds" / "presets.json"
 
 
@@ -35,21 +34,55 @@ class BackgroundPreset:
     harmonisation: dict[str, Any] = field(default_factory=dict)
 
 
+def _canonical_pose_name(name: str) -> str:
+    """Normalize pose names used by older and newer preset files."""
+
+    return name.replace("_", "-")
+
+
 def _flatten_canonical_options(item: dict[str, Any]) -> dict[str, Any]:
-    """Expose canonical preset sections to the deterministic renderer."""
+    """Expose canonical preset sections to the deterministic renderer.
+
+    The `_canonical_schema` flag and normalised `pose_rules` matter: without
+    them opencv_geometry.py falls back to blended pose defaults instead of the
+    preset's own pose-specific ranges.
+    """
 
     options = dict(item.get("recommended", {}))
     placement = item.get("placement", {})
     render = item.get("render", {})
+    if placement or render or item.get("scene"):
+        options["_canonical_schema"] = True
 
     placement_keys = {
         "default_width_percent": "car_width_percent",
         "default_car_width_percent": "car_width_percent",
+        "default_floor_line_percent": "floor_line_percent",
         "default_horizontal_offset": "horizontal_offset",
     }
     for source_key, target_key in placement_keys.items():
         if source_key in placement:
             options[target_key] = placement[source_key]
+
+    pose_rules = placement.get("pose_rules")
+    if isinstance(pose_rules, dict):
+        normalized_rules: dict[str, Any] = {}
+        for pose_name, rule in pose_rules.items():
+            if not isinstance(rule, dict):
+                continue
+            normalized_rule = dict(rule)
+            renames = {
+                "target_width_percent": "car_width_percent",
+                "min_width_percent": "min_car_width_percent",
+                "target_height_percent": "car_height_percent",
+                "max_width_percent": "max_car_width_percent",
+                "max_height_percent": "max_car_height_percent",
+            }
+            for old_key, new_key in renames.items():
+                if old_key in normalized_rule:
+                    normalized_rule[new_key] = normalized_rule.pop(old_key)
+            normalized_rules[_canonical_pose_name(pose_name)] = normalized_rule
+        options["pose_rules"] = normalized_rules
 
     vehicle_adjustments = render.get("vehicle_adjustments", {})
     adjustment_keys = {
@@ -97,7 +130,7 @@ def load_background_presets() -> list[BackgroundPreset]:
     if not PRESETS_FILE.exists():
         raise FileNotFoundError(
             f"presets.json not found at {PRESETS_FILE}. "
-            "Check the Dockerfile COPY of assets/backgrounds."
+            "Check the Dockerfile COPY of assets/."
         )
 
     data = json.loads(PRESETS_FILE.read_text(encoding="utf-8"))
@@ -108,7 +141,7 @@ def load_background_presets() -> list[BackgroundPreset]:
         # in the worker image assets live at ASSETS_DIR, so strip the prefix.
         relative = item["path"]
         if relative.startswith("assets/"):
-            relative = relative[len("assets/"):]
+            relative = relative[len("assets/") :]
 
         presets.append(
             BackgroundPreset(

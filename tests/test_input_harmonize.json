@@ -8,6 +8,7 @@
     "session_id": "ses_test_0001",
     "owner_id": "usr_test_0001",
     "background_preset_id": "indoor-neutral-showroom-clean",
+    "placement_engine": "opencv",
     "openai_quality": "medium",
     "skip_ai": false,
     "r2": {
