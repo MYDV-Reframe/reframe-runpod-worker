@@ -6,6 +6,16 @@ only the settings import is repointed at the worker's own settings module.
 
 This is the module that makes automotive glass transparent - see REQUIRED
 EDITS item 4 in the generated prompt.
+
+PROMPT ORDERING
+---------------
+PAINT_REALISM_ENHANCEMENT is emitted at the START of the prompt, before the
+scene-specific instructions. It was originally appended at the end and the
+effect was weak - the model gives less weight to the tail of a long prompt.
+Moving it to the front made a visible difference.
+
+Note the enhancement still says it is additional to, not a replacement for,
+the harmonisation instructions, so the ordering does not change its meaning.
 """
 
 from __future__ import annotations
@@ -214,7 +224,7 @@ def build_harmonization_prompt(
     """Build a compact prompt from the selected scene and detected vehicle."""
 
     if not scene:
-        return DEFAULT_HARMONIZATION_PROMPT + "\n\n" + PAINT_REALISM_ENHANCEMENT
+        return PAINT_REALISM_ENHANCEMENT + "\n\n" + DEFAULT_HARMONIZATION_PROMPT
 
     camera = scene.get("camera", {})
     lighting = scene.get("lighting", {})
@@ -297,6 +307,10 @@ HIGH-GLOSS DARK PAINT
    panel curvature or creating a plastic/CGI finish."""
 
     return f"""
+{PAINT_REALISM_ENHANCEMENT}
+
+================================================================================
+
 Perform restrained photographic harmonisation on this completed vehicle
 composite. {objective}
 
@@ -354,8 +368,6 @@ identity and geometry, but change source-environment lighting and reflections.
 
 QUALITY TARGET
 {quality_target}
-
-{PAINT_REALISM_ENHANCEMENT}
 """.strip()
 
 
