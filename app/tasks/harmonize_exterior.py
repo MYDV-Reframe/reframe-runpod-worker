@@ -14,6 +14,23 @@ Placement uses opencv_geometry.analyze_car_geometry(), same as the backend,
 falling back to the backend's own legacy aspect-ratio path if OpenCV is
 unavailable. Callers can override placement entirely via a `placement` block
 in the payload.
+
+RETURN PAYLOAD SIZE
+-------------------
+The returned dict is kept deliberately small. Returning the full
+`placement` and `placement_analysis` objects caused RunPod's job-done
+endpoint to reject the result:
+
+    Failed to return job results. | 400, message='Bad Request',
+    url='https://api.runpod.ai/v2/.../job-done/...'
+
+The job itself completed and wrote its artifacts to R2, but RunPod discarded
+the result, so the job surfaced as "failed" with no error text. classify-image
+and refine-full-resolution-alpha never hit this because their outputs are
+small.
+
+Placement detail is logged to stdout instead, where it shows in the endpoint
+logs without travelling back through job-done.
 """
 
 from __future__ import annotations
@@ -394,6 +411,11 @@ def run_harmonize_exterior(payload: dict[str, object]) -> dict[str, object]:
     base_response = storage.put_bytes(base_key, base_bytes, "image/jpeg")
     final_response = storage.put_bytes(final_key, final_bytes, "image/jpeg")
 
+    # Full placement detail goes to the logs rather than the return payload.
+    print(f"[harmonize-exterior] preset={preset.id}", flush=True)
+    print(f"[harmonize-exterior] placement={editor_placement}", flush=True)
+    print(f"[harmonize-exterior] analysis={profile_options}", flush=True)
+
     return {
         "status": "completed",
         "job_id": job_id,
@@ -415,9 +437,9 @@ def run_harmonize_exterior(payload: dict[str, object]) -> dict[str, object]:
             },
         },
         "background_preset_id": preset.id,
-        "placement": editor_placement,
-        "placement_analysis": profile_options,
-        "ai_skipped": skip_ai,
+        "placement_engine": str(profile_options.get("_placement_engine", "unknown")),
+        "pose": str(profile_options.get("_pose", "unknown")),
+        "car_width_percent": int(profile_options.get("car_width_percent") or 0),
         "runtime_ms": _elapsed_ms(started),
         "error": None,
     }
