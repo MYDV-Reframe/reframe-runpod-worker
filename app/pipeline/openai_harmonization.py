@@ -54,6 +54,156 @@ any component, or add people, vehicles, props, text or watermarks.
 """.strip()
 
 
+PAINT_REALISM_ENHANCEMENT = """
+ADDITIONAL VEHICLE PAINT & SURFACE REALISM ENHANCEMENT
+
+In addition to all existing harmonisation requirements, apply the following
+enhancement to the vehicle itself.
+
+The vehicle must continue to be treated as the exact original vehicle being
+harmonised into the supplied environment. Do not replace, redesign, repaint,
+reshape or otherwise alter the vehicle. This is an additional realism and
+finish pass on the existing vehicle only.
+
+AUTOMOTIVE PAINT REALISM
+Improve the optical appearance of the vehicle's existing paint so that it looks
+like a genuine, professionally prepared and freshly machine-polished vehicle
+photographed for high-quality commercial automotive advertising.
+
+Increase the perceived paint depth, colour richness, colour density, clear-coat
+quality, surface smoothness, natural gloss and three-dimensionality.
+
+Correct any flat, dull, hazy, grey, milky or washed-out appearance caused by
+compositing or harmonisation.
+
+Preserve the vehicle's exact original paint colour and character. Do not simply
+increase global saturation or brightness.
+- Dark colours should remain genuinely deep and rich rather than becoming grey.
+- Silver and grey vehicles should retain convincing metallic depth and variation
+  rather than appearing as a flat grey surface.
+- White vehicles should remain clean and bright while retaining subtle
+  body-surface definition.
+- Coloured vehicles should have richer, deeper paint without becoming
+  oversaturated or artificially vivid.
+- Where the original vehicle has metallic or pearl paint, preserve and enhance
+  its natural metallic/pearl response without inventing excessive sparkle or
+  visible artificial texture.
+
+CLEAR-COAT AND POLISHED FINISH
+Give the existing paint a realistic automotive clear-coat appearance. The
+surface should appear clean, smooth, deep and highly polished, similar to a
+vehicle that has just received professional detailing and paint correction.
+
+Create realistic specular highlights and reflected light across the existing
+bodywork using soft elongated highlights, broad reflected light, subtle bright
+reflection bands, darker reflected areas, smooth transitions between highlights
+and shadows, and reflections that follow the curvature of individual panels.
+
+Do not apply an identical gloss or brightness level to the whole vehicle.
+Do not make the paint look wet, oily, chrome-like, plastic or artificially
+mirror-polished. The objective is premium automotive paint, not an obvious
+"shine effect".
+
+ENVIRONMENTAL REFLECTIONS
+Where physically appropriate, make the vehicle's paint visibly respond to the
+actual environment into which it has been placed. Use the supplied background
+and its lighting as the source of realistic environmental reflections.
+
+For outdoor environments, consider naturally reflected sky, clouds, surrounding
+architecture, buildings, darker structures and surrounding environmental tones.
+
+For indoor showroom environments, consider naturally reflected ceiling lights,
+LED panels, windows, large glass areas, walls, architectural features and
+darker areas of the showroom.
+
+For example, long ceiling LED fixtures should produce subtle elongated reflected
+highlights across appropriate bonnet, roof, shoulder and side panels. Large
+windows should create broad, soft reflections. Dark architectural areas should
+produce correspondingly darker reflected regions.
+
+Reflections must follow the curvature, orientation and geometry of the existing
+vehicle panels. Do not add generic studio reflections that do not correspond to
+the supplied environment. Do not create reflections that contradict the
+direction, colour or intensity of the scene lighting.
+
+BODYWORK DIMENSIONALITY
+Use realistic light, shade and reflection to make the existing vehicle bodywork
+appear more three-dimensional and sculpted. Subtly enhance the visual definition
+of existing bonnet contours, shoulder lines, door surfaces, wing surfaces, wheel
+arches, roof curvature, factory character lines and other existing body
+contours.
+
+Allow recessed areas and surfaces facing away from the principal light source to
+remain naturally deeper. Maintain realistic tonal separation between illuminated
+and shaded panels. Do not artificially sharpen panel edges or invent additional
+contours. Do not change the vehicle's geometry.
+
+LIGHTING INTEGRATION
+All new paint highlights, reflections and surface contrast must be consistent
+with the existing harmonisation and the supplied environment. The vehicle should
+appear to have been physically photographed in the environment rather than cut
+out and placed onto it.
+
+Maintain consistency with light direction, light intensity, colour temperature,
+softness of the light, environmental brightness and shadows already created
+during harmonisation. The paint should respond naturally to the same light
+sources affecting the surrounding environment.
+
+MATERIAL-SPECIFIC BEHAVIOUR
+Preserve the natural optical characteristics of different vehicle materials.
+- Paint should have realistic automotive clear-coat reflections.
+- Glass should remain glass and should not receive the same treatment as
+  painted bodywork.
+- Chrome and metallic trim should retain their own reflective characteristics.
+- Black plastic, rubber, tyres and textured trim should not be artificially
+  glossed.
+- Lights should retain their existing clarity and construction.
+- Wheels should remain realistic metal/alloy surfaces rather than being treated
+  as painted bodywork.
+
+Apply the strongest paint enhancement selectively to genuine painted body
+panels.
+
+VEHICLE IDENTITY PRESERVATION
+This enhancement must never change the identity or specification of the vehicle.
+Preserve exactly: body shape, proportions, panel geometry, original paint
+colour, wheels, tyres, badges, registration plate, headlights, taillights,
+grille, windows, mirrors, trim, factory features and existing vehicle details.
+
+Do not invent, remove or redesign vehicle features. Do not modify the
+registration plate. Do not make the vehicle appear newer, modified or like a
+different model.
+
+COMMERCIAL PHOTOGRAPHY TARGET
+The final vehicle should look like a real car photographed by a professional
+automotive photographer for a premium UK dealership advertisement immediately
+after professional preparation and machine polishing.
+
+Desired: deep paint, rich colour, clean clear coat, realistic environmental
+reflections, controlled specular highlights, natural panel definition and
+convincing three-dimensional surface depth.
+
+Avoid: flat paint, washed-out colour, grey haze, weak reflections, artificial
+HDR, excessive saturation, plastic-looking gloss, mirror-like reflections,
+excessive sharpening and fake studio reflections.
+
+IMPORTANT PRIORITY
+This is an additional enhancement to the existing harmonisation process, not a
+replacement for it. Retain and execute all existing vehicle placement,
+perspective, scale, lighting, shadow, colour matching, environmental integration
+and realism instructions. Then additionally improve the vehicle's paint and
+surface response as described above.
+
+Do not achieve the effect simply by increasing brightness, contrast, saturation
+or sharpness. The desired result comes primarily from realistic automotive paint
+response to the surrounding environment: deeper colour, clear-coat depth,
+physically plausible reflected light and controlled specular highlights
+following the existing vehicle's body geometry.
+
+The result must remain photorealistic and commercially usable.
+""".strip()
+
+
 def build_harmonization_prompt(
     *,
     preset_name: str,
@@ -64,7 +214,7 @@ def build_harmonization_prompt(
     """Build a compact prompt from the selected scene and detected vehicle."""
 
     if not scene:
-        return DEFAULT_HARMONIZATION_PROMPT
+        return DEFAULT_HARMONIZATION_PROMPT + "\n\n" + PAINT_REALISM_ENHANCEMENT
 
     camera = scene.get("camera", {})
     lighting = scene.get("lighting", {})
@@ -204,6 +354,8 @@ identity and geometry, but change source-environment lighting and reflections.
 
 QUALITY TARGET
 {quality_target}
+
+{PAINT_REALISM_ENHANCEMENT}
 """.strip()
 
 
