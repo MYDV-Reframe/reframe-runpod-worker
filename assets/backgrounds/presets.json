@@ -39,11 +39,125 @@
       "reflection": false
     }
   },
+  
   {
     "id": "outdoor-concrete-lot",
     "name": "Outdoor Concrete Lot",
     "category": "safe-outdoor",
     "path": "assets/backgrounds/generated/outdoor-concrete-lot.png",
+    "description": "Open outdoor forecourt with a mid-grey concrete surface, a low green treeline across the horizon and soft overcast daylight.",
+    "scene": {
+      "environment": "Open outdoor dealership forecourt",
+      "style": "Natural outdoor vehicle listing",
+      "camera": {
+        "perspective": "Eye level",
+        "angle": "Straight-on",
+        "focal_length": "35mm equivalent"
+      },
+      "lighting": {
+        "type": "Soft overcast daylight with broad even sky illumination",
+        "direction": "Diffuse from above with no strong directional source",
+        "softness": "Soft",
+        "ambient_level": "High",
+        "colour_temperature": 6200,
+        "contrast": "Low-medium"
+      },
+      "floor": {
+        "material": "Outdoor concrete forecourt",
+        "colour": "Mid grey",
+        "finish": "Natural matte concrete",
+        "reflectivity": "Low"
+      },
+      "walls": {
+        "material": "Open horizon with a low deciduous treeline",
+        "colour": "Muted green"
+      },
+      "shadow": {
+        "style": "Soft diffuse contact shadow with minimal directional cast",
+        "direction": "Directly beneath the vehicle"
+      },
+      "reflection_environment": "Broad overcast sky above, muted green treeline at the horizon and matte grey concrete below",
+      "reflections": {
+        "permitted_pattern": "Broad soft neutral sky reflections on upward-facing glass, roof and bonnet; a restrained muted green treeline band at the horizon line on upright glass and upper paint; subtle grey concrete fill on lower bodywork; diffuse low-contrast highlights with no hard specular edges",
+        "remove": "Indoor fluorescent or LED strips, workshop walls and ceilings, source buildings, garage doors, signs, nearby vehicles, people and every other recognisable shape inherited from the source photograph",
+        "surface_guidance": "On the side doors and rear-quarter paint, remove wavy bright patches and object-shaped source reflections. Replace them with a smooth vertical gradient of soft sky above and muted treeline at the horizon, following the panel curvature and continuing coherently across adjacent doors. Overcast light is even, so avoid inventing bright specular streaks. Preserve metallic paint, clear-coat gloss and panel contours; do not make the paint matte, flat, blurred or newly recoloured.",
+        "glass_guidance": "On the windscreen and side glass, use soft neutral overcast sky in the upper portion easing into a restrained muted green treeline toward the horizon line. Avoid a flat blue wash, hard specular streaks and any indoor reflection pattern. Keep the glass transparent enough for realistic cabin visibility and preserve the windscreen frame, mirrors, dashboard and occupants if present."
+      },
+      "overall_look": "Natural, evenly lit outdoor vehicle listing photograph"
+    },
+    "placement": {
+      "default_width_percent": 74,
+      "default_floor_line_percent": 94,
+      "default_horizontal_offset": 0,
+      "minimum_vehicle_top_percent": 22,
+      "pose_rules": {
+        "front": {
+          "min_width_percent": 56,
+          "target_width_percent": 64,
+          "max_width_percent": 68,
+          "max_height_percent": 60,
+          "aspect_ratio_min": 0.85,
+          "aspect_ratio_max": 1.35
+        },
+        "three-quarter": {
+          "min_width_percent": 64,
+          "target_width_percent": 72,
+          "max_width_percent": 76,
+          "max_height_percent": 62,
+          "aspect_ratio_min": 1.35,
+          "aspect_ratio_max": 1.85
+        },
+        "side": {
+          "min_width_percent": 78,
+          "target_width_percent": 82,
+          "max_width_percent": 84,
+          "max_height_percent": 64,
+          "aspect_ratio_min": 1.85,
+          "aspect_ratio_max": 2.65
+        }
+      }
+    },
+    "render": {
+      "vehicle_adjustments": {
+        "brightness": 100,
+        "contrast": -1,
+        "saturation": 96,
+        "warmth": 0
+      },
+      "edges": {
+        "erode": 1,
+        "feather": 0.5
+      },
+      "shadow": {
+        "opacity": 20,
+        "blur": 30,
+        "height": 12,
+        "vertical_offset": 8
+      },
+      "contact_shadow": {
+        "enabled": true,
+        "opacity": 20,
+        "blur": 5,
+        "band_percent": 3
+      },
+      "reflection": {
+        "enabled": false,
+        "strength": 0
+      }
+    },
+    "harmonisation": {
+      "objective": "Transform the completed composite into a natural single-exposure outdoor photograph under soft overcast daylight, replacing all source-environment reflections.",
+      "replace_original_reflections": true,
+      "update_glass_reflections": true,
+      "update_paint_reflections": true,
+      "match_background_lighting": true,
+      "match_colour_temperature": true,
+      "remove_source_environment": true,
+      "improve_grounding": true,
+      "retain_interior_visibility": true,
+      "preserve_background": true,
+      "quality_target": "Visually indistinguishable from an authentic vehicle listing photograph captured naturally on this forecourt in overcast daylight."
+    },
     "recommended": {
       "car_width_percent": 78,
       "vertical_offset": 22,
